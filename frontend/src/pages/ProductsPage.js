@@ -186,49 +186,52 @@ const ProductsPage = () => {
               }>
                 {filteredProducts.map((product) => (
                   viewMode === "grid" ? (
-                    <Card key={product.id} className="product-card" data-testid={`product-card-${product.id}`}>
-                      <div className="aspect-w-16 aspect-h-12 relative">
-                        <img
-                          src={product.image_url}
-                          alt={product.name}
-                          className="w-full h-48 object-cover"
-                        />
-                        <div className="absolute top-2 right-2">
-                          <Badge variant="secondary" className="bg-white/90 text-gray-700">
-                            {product.category_name}
-                          </Badge>
-                        </div>
-                      </div>
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 flex-1 mr-2">
-                            {product.name}
-                          </h3>
-                          <div className="flex items-center">
-                            <Star className="w-3 h-3 text-yellow-400 fill-current" />
-                            <span className="text-xs text-gray-500 ml-1">4.5</span>
+                    <Card key={product.id} className="product-card cursor-pointer hover:shadow-lg transition-shadow" data-testid={`product-card-${product.id}`}>
+                      <Link to={`/products/${product.id}`} className="block">
+                        <div className="aspect-w-16 aspect-h-12 relative">
+                          <img
+                            src={product.image_url}
+                            alt={product.name}
+                            className="w-full h-48 object-cover"
+                          />
+                          <div className="absolute top-2 right-2">
+                            <Badge variant="secondary" className="bg-white/90 text-gray-700">
+                              {product.category_name}
+                            </Badge>
                           </div>
                         </div>
-                        <p className="text-gray-600 text-xs mb-3 line-clamp-2">
-                          {product.description}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-lg text-orange-600">
-                            ${product.price}
-                          </span>
-                          <Button 
-                            size="sm" 
-                            className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 text-xs"
-                            data-testid={`add-to-cart-${product.id}`}
-                          >
-                            <ShoppingBag className="w-3 h-3 mr-1" />
-                            Add
-                          </Button>
-                        </div>
-                        <div className="mt-2 text-xs text-gray-500">
-                          Stock: {product.stock} units
-                        </div>
-                      </CardContent>
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start mb-2">
+                            <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 flex-1 mr-2">
+                              {product.name}
+                            </h3>
+                            <div className="flex items-center">
+                              <Star className="w-3 h-3 text-yellow-400 fill-current" />
+                              <span className="text-xs text-gray-500 ml-1">4.5</span>
+                            </div>
+                          </div>
+                          <p className="text-gray-600 text-xs mb-3 line-clamp-2">
+                            {product.description}
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-lg text-orange-600">
+                              ${product.price}
+                            </span>
+                            <Button 
+                              size="sm" 
+                              className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 text-xs"
+                              data-testid={`add-to-cart-${product.id}`}
+                              onClick={(e) => e.preventDefault()} // Prevent card navigation when clicking button
+                            >
+                              <ShoppingBag className="w-3 h-3 mr-1" />
+                              Add
+                            </Button>
+                          </div>
+                          <div className="mt-2 text-xs text-gray-500">
+                            Stock: {product.stock} units
+                          </div>
+                        </CardContent>
+                      </Link>
                     </Card>
                   ) : (
                     <Card key={product.id} className="product-card" data-testid={`product-list-${product.id}`}>
