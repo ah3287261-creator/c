@@ -322,6 +322,111 @@ def check_auth():
     else:
         return jsonify({"authenticated": False}), 200
 
+# Order Routes
+@app.route('/api/orders', methods=['POST'])
+def create_order():
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        required_fields = ['product_id', 'quantity', 'size', 'customer_info', 'shipping_address']
+        for field in required_fields:
+            if not data.get(field):
+                return jsonify({"error": f"{field} is required"}), 400
+        
+        # Get product details
+        product = products_collection.find_one({"id": data['product_id']}, {"_id": 0})
+        if not product:
+            return jsonify({"error": "Product not found"}), 404
+        
+        # Check stock availability
+        if product['stock'] < data['quantity']:
+            return jsonify({"error": "Insufficient stock"}), 400
+        
+        # Calculate total price
+        unit_price = product['price']
+        total_price = unit_price * data['quantity']
+        
+        # Create order
+        order = {
+            "id": str(uuid.uuid4()),
+            "user_id": session.get('user_id'),
+            "product_id": data['product_id'],
+            "product_name": product['name'],
+            "product_image": product['image_url'],
+            "quantity": data['quantity'],
+            "size": data['size'],
+            "unit_price": unit_price,
+            "total_price": total_price,
+            "customer_info": {
+                "name": data['customer_info']['name'],
+                "email": data['customer_info']['email'],
+                "phone": data['customer_info']['phone']
+            },
+            "shipping_address": {
+                "street": data['shipping_address']['street'],
+                "city": data['shipping_address']['city'],
+                "state": data['shipping_address']['state'],
+                "zip_code": data['shipping_address']['zip_code'],
+                "country": data['shipping_address'].get('country', 'India')
+            },
+            "payment_method": "Cash on Delivery",
+            "order_status": "confirmed",
+            "payment_status": "pending",
+            "estimated_delivery": "5-7 business days",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        # Insert order
+        orders_collection.insert_one(order)
+        
+        # Update product stock
+        products_collection.update_one(
+            {"id": data['product_id']},
+            {"$inc": {"stock": -data['quantity']}}
+        )
+        
+        # Remove MongoDB _id from response
+        order.pop('_id', None)
+        
+        return jsonify({
+            "message": "Order created successfully",
+            "order": order
+        }), 201
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/orders', methods=['GET'])
+def get_orders():
+    try:
+        # Get user's orders (if authenticated) or all orders (for admin)
+        query = {}
+        if 'user_id' in session:
+            query['user_id'] = session['user_id']
+        
+        orders = list(orders_collection.find(query, {"_id": 0}).sort("created_at", -1))
+        
+        return jsonify({"orders": orders}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/orders/<order_id>', methods=['GET'])
+def get_order(order_id):
+    try:
+        order = orders_collection.find_one({"id": order_id}, {"_id": 0})
+        
+        if not order:
+            return jsonify({"error": "Order not found"}), 404
+        
+        # Check if user owns this order (if authenticated)
+        if 'user_id' in session and order.get('user_id') != session['user_id']:
+            return jsonify({"error": "Access denied"}), 403
+        
+        return jsonify({"order": order}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # Initialize sample data on startup
 with app.app_context():
     init_sample_data()
