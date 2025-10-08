@@ -234,52 +234,55 @@ const ProductsPage = () => {
                       </Link>
                     </Card>
                   ) : (
-                    <Card key={product.id} className="product-card" data-testid={`product-list-${product.id}`}>
-                      <CardContent className="p-6">
-                        <div className="flex flex-col sm:flex-row gap-4">
-                          <div className="w-full sm:w-32 h-32 flex-shrink-0">
-                            <img
-                              src={product.image_url}
-                              alt={product.name}
-                              className="w-full h-full object-cover rounded-lg"
-                            />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex justify-between items-start mb-2">
-                              <h3 className="font-semibold text-lg text-gray-900">
-                                {product.name}
-                              </h3>
-                              <Badge variant="secondary" className="ml-2">
-                                {product.category_name}
-                              </Badge>
+                    <Card key={product.id} className="product-card cursor-pointer hover:shadow-lg transition-shadow" data-testid={`product-list-${product.id}`}>
+                      <Link to={`/products/${product.id}`} className="block">
+                        <CardContent className="p-6">
+                          <div className="flex flex-col sm:flex-row gap-4">
+                            <div className="w-full sm:w-32 h-32 flex-shrink-0">
+                              <img
+                                src={product.image_url}
+                                alt={product.name}
+                                className="w-full h-full object-cover rounded-lg"
+                              />
                             </div>
-                            <p className="text-gray-600 mb-3">
-                              {product.description}
-                            </p>
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                              <div className="flex items-center gap-4">
-                                <span className="font-bold text-xl text-orange-600">
-                                  ${product.price}
-                                </span>
-                                <div className="flex items-center">
-                                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                                  <span className="text-sm text-gray-500 ml-1">4.5 (128 reviews)</span>
-                                </div>
-                                <span className="text-sm text-gray-500">
-                                  Stock: {product.stock}
-                                </span>
+                            <div className="flex-1">
+                              <div className="flex justify-between items-start mb-2">
+                                <h3 className="font-semibold text-lg text-gray-900">
+                                  {product.name}
+                                </h3>
+                                <Badge variant="secondary" className="ml-2">
+                                  {product.category_name}
+                                </Badge>
                               </div>
-                              <Button 
-                                className="bg-orange-500 hover:bg-orange-600 text-white w-full sm:w-auto"
-                                data-testid={`add-to-cart-list-${product.id}`}
-                              >
-                                <ShoppingBag className="w-4 h-4 mr-2" />
-                                Add to Cart
-                              </Button>
+                              <p className="text-gray-600 mb-3">
+                                {product.description}
+                              </p>
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                <div className="flex items-center gap-4">
+                                  <span className="font-bold text-xl text-orange-600">
+                                    ${product.price}
+                                  </span>
+                                  <div className="flex items-center">
+                                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                    <span className="text-sm text-gray-500 ml-1">4.5 (128 reviews)</span>
+                                  </div>
+                                  <span className="text-sm text-gray-500">
+                                    Stock: {product.stock}
+                                  </span>
+                                </div>
+                                <Button 
+                                  className="bg-orange-500 hover:bg-orange-600 text-white w-full sm:w-auto"
+                                  data-testid={`add-to-cart-list-${product.id}`}
+                                  onClick={(e) => e.preventDefault()} // Prevent card navigation when clicking button
+                                >
+                                  <ShoppingBag className="w-4 h-4 mr-2" />
+                                  Add to Cart
+                                </Button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </CardContent>
+                        </CardContent>
+                      </Link>
                     </Card>
                   )
                 ))}
