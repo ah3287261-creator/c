@@ -11,6 +11,8 @@ import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import ProfilePage from "./pages/ProfilePage";
 import AuthPage from "./pages/AuthPage";
 
