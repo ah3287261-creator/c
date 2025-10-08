@@ -196,41 +196,44 @@ const HomePage = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProducts.map((product) => (
-              <Card key={product.id} className="product-card" data-testid={`featured-product-${product.id}`}>
-                <div className="aspect-w-16 aspect-h-12">
-                  <img
-                    src={product.image_url}
-                    alt={product.name}
-                    className="w-full h-48 object-cover"
-                  />
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-lg text-gray-900 line-clamp-2">
-                      {product.name}
-                    </h3>
-                    <div className="flex items-center ml-2">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                      <span className="text-sm text-gray-500 ml-1">4.5</span>
+              <Card key={product.id} className="product-card cursor-pointer hover:shadow-lg transition-shadow" data-testid={`featured-product-${product.id}`}>
+                <Link to={`/products/${product.id}`} className="block">
+                  <div className="aspect-w-16 aspect-h-12">
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      className="w-full h-48 object-cover"
+                    />
+                  </div>
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-semibold text-lg text-gray-900 line-clamp-2">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-center ml-2">
+                        <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                        <span className="text-sm text-gray-500 ml-1">4.5</span>
+                      </div>
                     </div>
-                  </div>
-                  <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                    {product.description}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="price-tag text-2xl">
-                      ${product.price}
-                    </span>
-                    <Button 
-                      size="sm" 
-                      className="bg-orange-500 hover:bg-orange-600 text-white"
-                      data-testid={`add-to-cart-${product.id}`}
-                    >
-                      <ShoppingBag className="w-4 h-4 mr-2" />
-                      Add to Cart
-                    </Button>
-                  </div>
-                </CardContent>
+                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                      {product.description}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <span className="price-tag text-2xl">
+                        ${product.price}
+                      </span>
+                      <Button 
+                        size="sm" 
+                        className="bg-orange-500 hover:bg-orange-600 text-white"
+                        data-testid={`add-to-cart-${product.id}`}
+                        onClick={(e) => e.preventDefault()} // Prevent card navigation when clicking button
+                      >
+                        <ShoppingBag className="w-4 h-4 mr-2" />
+                        Add to Cart
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Link>
               </Card>
             ))}
           </div>
