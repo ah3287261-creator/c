@@ -284,6 +284,7 @@ const ProductDetailPage = () => {
                   variant="outline"
                   className="w-full border-orange-500 text-orange-600 hover:bg-orange-50 py-3 text-lg font-semibold"
                   data-testid="buy-now-button"
+                  onClick={handleBuyNow}
                 >
                   Buy Now - Cash on Delivery
                 </Button>
