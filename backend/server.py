@@ -34,6 +34,7 @@ db = client[os.environ['DB_NAME']]
 users_collection = db.users
 products_collection = db.products
 categories_collection = db.categories
+orders_collection = db.orders
 
 # Initialize sample data
 def init_sample_data():
