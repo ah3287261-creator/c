@@ -73,6 +73,17 @@ const ProductDetailPage = () => {
     toast.success(isFavorite ? "Removed from favorites" : "Added to favorites");
   };
 
+  const handleBuyNow = () => {
+    // Navigate to checkout with product details
+    navigate('/checkout', {
+      state: {
+        product: product,
+        quantity: quantity,
+        size: selectedSize
+      }
+    });
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
